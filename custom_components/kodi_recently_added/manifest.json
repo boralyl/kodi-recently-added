@@ -1,0 +1,9 @@
+{
+  "codeowners": ["@boralyl"],
+  "config_flow": false,
+  "dependencies": [],
+  "documentation": "https://github.com/boralyl/kodi_recently_added",
+  "domain": "kodi_recently_added",
+  "name": "Kodi Recently Added Media",
+  "requirements": []
+}

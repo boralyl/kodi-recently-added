@@ -1,0 +1,5 @@
+{
+  "name": "Kodi Recently Added Media",
+  "render_readme": true,
+  "iot_class": "Local Polling"
+}
