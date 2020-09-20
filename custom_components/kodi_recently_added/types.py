@@ -16,26 +16,3 @@ class KodiConfig(TypedDict):
     timeout: int
     username: str
     ws_port: int
-
-
-class KodiArt(TypedDict):
-    thumb: str
-    tvshow.banner: str
-    tvshow.fanart: str
-    tvshow.poster: str
-
-
-class KodiTVEpisodeResult(TypedDict):
-    art: KodiArt
-    dateadded: str
-    episode: int
-    episodeid: int
-    fanart: str
-    firstaired: str
-    label: str
-    playcount: int
-    rating: float
-    runtime: int
-    season: int
-    showtitle: str
-    title: str
