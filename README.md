@@ -10,6 +10,8 @@ Kodi's recently added media.
 
 ![Kodi Recently Added Media](https://raw.githubusercontent.com/boralyl/kodi-recently-added/master/assets/example.png)
 
+## Pre-Installation
+
 **NOTE: This component only will work with Home Assistant version 0.115 and above. Additionally Kodi must be setup via the UI in the integrations section of the Home Assistant configuration.**
 
 ## HACS Installation
