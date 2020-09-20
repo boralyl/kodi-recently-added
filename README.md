@@ -22,9 +22,9 @@ Kodi's recently added media.
 
 ### Platform Configuration:
 
-| key  | default | required | description                  |
-| ---- | ------- | -------- | ---------------------------- |
-| host |         | yes      | The host Kodi is running on. |
+| key  | required | description                                                                                                         |
+| ---- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| host | yes      | The host Kodi is running on. This is the same host that was configured when adding the Kodi integration via the UI. |
 
 The host is the same host you entered when configuring Kodi via the integrations page.
 
