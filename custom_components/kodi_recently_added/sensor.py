@@ -34,8 +34,14 @@ async def async_setup_platform(
     host = config[CONF_HOST]
     config_entry = find_matching_config_entry_for_host(hass, host)
     if config_entry is None:
+        hosts = [
+            entry.data["host"]
+            for entry in hass.config_entries.async_entries(KODI_DOMAIN)
+        ]
         _LOGGER.error(
-            "Failed to setup sensor. Could not find config entry for kodi host %s", host
+            "Failed to setup sensor. Could not find config entry for kodi host `%s` from configured hosts: %s",
+            host,
+            hosts,
         )
         return
 
