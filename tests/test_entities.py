@@ -32,6 +32,20 @@ def test_kodi_media_entity_init_base_web_url_http():
     assert expected == entity.base_web_url
 
 
+def test_kodi_media_entity_init_base_web_url_no_auth():
+    """Test base web url property when there is no authentication configured."""
+    config = {
+        "host": "127.0.0.1",
+        "password": None,
+        "port": 8080,
+        "ssl": False,
+        "username": None,
+    }
+    entity = KodiMediaEntity(mock.Mock(), config)
+    expected = "http://127.0.0.1:8080/image/image%3A%2F%2F"
+    assert expected == entity.base_web_url
+
+
 def test_get_web_url_http_already():
     """Test get_web_url when path is an http url."""
     config = {

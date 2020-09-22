@@ -24,7 +24,9 @@ class KodiMediaEntity(Entity):
         self._state = None
 
         protocol = "https" if config["ssl"] else "http"
-        auth = f"{config['username']}:{config['password']}@"
+        auth = ""
+        if config['username'] is not None and config['password'] is not None:
+            auth = f"{config['username']}:{config['password']}@"
         self.base_web_url = (
             f"{protocol}://{auth}{config['host']}:{config['port']}/image/image%3A%2F%2F"
         )
