@@ -6,5 +6,5 @@
   "issue_tracker": "https://github.com/boralyl/kodi-recently-added/issues",
   "domain": "kodi_recently_added",
   "name": "Kodi Recently Added Media",
-  "requirements": []
+  "requirements": ["typing-extensions==3.7.4.1"]
 }
