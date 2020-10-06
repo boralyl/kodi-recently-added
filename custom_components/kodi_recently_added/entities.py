@@ -25,7 +25,7 @@ class KodiMediaEntity(Entity):
 
         protocol = "https" if config["ssl"] else "http"
         auth = ""
-        if config['username'] is not None and config['password'] is not None:
+        if config["username"] is not None and config["password"] is not None:
             auth = f"{config['username']}:{config['password']}@"
         self.base_web_url = (
             f"{protocol}://{auth}{config['host']}:{config['port']}/image/image%3A%2F%2F"
@@ -122,7 +122,7 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
                 "line2_default": "$release",
                 "line3_default": "$rating - $runtime",
                 "line4_default": "$number",
-                "icon": "mdi:arrow-down-bold",
+                "icon": "mdi:eye-off",
             }
         ]
         for show in self.data:
