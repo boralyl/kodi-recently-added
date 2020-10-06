@@ -23,7 +23,7 @@ def find_matching_config_entry_for_host(
     """Search existing config entries for one matching the host."""
     for entry in hass.config_entries.async_entries(KODI_DOMAIN):
         # Skip any entry whose source is marked as ignored.
-        if entry.data[CONF_HOST] == host and entry.source != "ignore":
+        if entry.data.get(CONF_HOST) == host and entry.source != "ignore":
             return entry
     return None
 

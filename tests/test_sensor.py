@@ -43,3 +43,15 @@ def test_find_matching_config_entry_for_host_skip_source_ignore():
     assert config_entries[1] == find_matching_config_entry_for_host(
         mock_hass, "127.0.0.1"
     )
+
+
+def test_find_matching_config_entry_for_host_no_host_key():
+    """Test we do not find a matching config entry.
+
+    Also ensure we don't raise an error if the config entry's data has no host key.
+    """
+    config_entries = [MockConfigEntry(domain=KODI_DOMAIN, data={})]
+    mock_hass = Mock()
+    mock_hass.config_entries.async_entries.return_value = config_entries
+
+    assert find_matching_config_entry_for_host(mock_hass, "127.0.0.1") is None
