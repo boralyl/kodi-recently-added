@@ -22,7 +22,8 @@ def find_matching_config_entry_for_host(
 ) -> Optional[ConfigEntry]:
     """Search existing config entries for one matching the host."""
     for entry in hass.config_entries.async_entries(KODI_DOMAIN):
-        if entry.data[CONF_HOST] == host:
+        # Skip any entry whose source is marked as ignored.
+        if entry.data[CONF_HOST] == host and entry.source != "ignore":
             return entry
     return None
 
@@ -45,7 +46,17 @@ async def async_setup_platform(
         )
         return
 
-    data = hass.data[KODI_DOMAIN][config_entry.entry_id]
+    try:
+        data = hass.data[KODI_DOMAIN][config_entry.entry_id]
+    except KeyError:
+        config_entries = [
+            entry.as_dict() for entry in hass.config_entries.async_entries(KODI_DOMAIN)
+        ]
+        _LOGGER.error(
+            "Failed to setup sensor. Could not find kodi data from existing config entries: %s",
+            config_entries,
+        )
+        return
     kodi = data[DATA_KODI]
 
     tv_entity = KodiRecentlyAddedTVEntity(kodi, config_entry.data)
