@@ -17,9 +17,12 @@ class KodiMediaEntity(Entity):
     result_key: str = NotImplemented
     update_method: str = NotImplemented
 
-    def __init__(self, kodi: Kodi, config: KodiConfig) -> None:
+    def __init__(
+        self, kodi: Kodi, config: KodiConfig, hide_watched: bool = False
+    ) -> None:
         super().__init__()
         self.kodi = kodi
+        self.hide_watched = hide_watched
         self.data = []
         self._state = None
 
@@ -126,6 +129,8 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
             }
         ]
         for show in self.data:
+            if self.hide_watched and show["playcount"] > 0:
+                continue
             try:
                 card = {
                     "airdate": show["dateadded"].replace(" ", "T") + "Z",
@@ -193,10 +198,12 @@ class KodiRecentlyAddedMoviesEntity(KodiMediaEntity):
                 "line2_default": "$release",
                 "line3_default": "$rating - $runtime",
                 "line4_default": "$studio",
-                "icon": "mdi:arrow-down-bold",
+                "icon": "mdi:eye-off",
             }
         ]
         for movie in self.data:
+            if self.hide_watched and movie["playcount"] > 0:
+                continue
             try:
                 card = {
                     "aired": movie["premiered"],

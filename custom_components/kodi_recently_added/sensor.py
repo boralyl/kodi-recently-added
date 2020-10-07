@@ -9,10 +9,16 @@ from homeassistant.const import CONF_HOST
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 
+from .const import CONF_HIDE_WATCHED
 from .entities import KodiRecentlyAddedMoviesEntity, KodiRecentlyAddedTVEntity
 
 PLATFORM_SCHEMA = vol.Any(
-    PLATFORM_SCHEMA.extend({vol.Required(CONF_HOST): cv.string}),
+    PLATFORM_SCHEMA.extend(
+        {
+            vol.Required(CONF_HOST): cv.string,
+            vol.Optional(CONF_HIDE_WATCHED, default=False): bool,
+        }
+    ),
 )
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,6 +39,7 @@ async def async_setup_platform(
 ) -> None:
     """Setup the sensor platform."""
     host = config[CONF_HOST]
+    hide_watched = config[CONF_HIDE_WATCHED]
     config_entry = find_matching_config_entry_for_host(hass, host)
     if config_entry is None:
         hosts = [
@@ -59,6 +66,6 @@ async def async_setup_platform(
         return
     kodi = data[DATA_KODI]
 
-    tv_entity = KodiRecentlyAddedTVEntity(kodi, config_entry.data)
-    movies_entity = KodiRecentlyAddedMoviesEntity(kodi, config_entry.data)
+    tv_entity = KodiRecentlyAddedTVEntity(kodi, config_entry.data, hide_watched)
+    movies_entity = KodiRecentlyAddedMoviesEntity(kodi, config_entry.data, hide_watched)
     async_add_entities([tv_entity, movies_entity])

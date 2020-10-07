@@ -24,9 +24,10 @@ Kodi's recently added media.
 
 ### Platform Configuration:
 
-| key  | required | description                                                                                                         |
-| ---- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| host | yes      | The host Kodi is running on. This is the same host that was configured when adding the Kodi integration via the UI. |
+| key          | required | default | description                                                                                                         |
+| ------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| host         | yes      | --      | The host Kodi is running on. This is the same host that was configured when adding the Kodi integration via the UI. |
+| hide_watched | no       | false   | Indicates if watched media should be skipped or not.                                                                |
 
 The host is the same host you entered when configuring Kodi via the integrations page.
 
@@ -36,6 +37,7 @@ The host is the same host you entered when configuring Kodi via the integrations
 sensor:
   - platform: kodi_recently_added
     host: 10.1.1.2
+    hide_watched: true
 
   - platform: kodi_recently_added
     host: 10.1.1.3
