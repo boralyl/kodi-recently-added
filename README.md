@@ -58,3 +58,13 @@ sensor:
 ```
 
 _NOTE: Currently genres, rating, and studio only work for Movies._
+
+## Known Issues
+
+### Artwork does not load when using the upcoming-media-card
+
+One reason this could occur is if you setup you Home Assistance instance to use SSL and
+your Kodi instance does not use SSL. When the upcoming-media-card tries to load the
+artwork it will fail to do so since modern browsers do not allow loading insecure requests.
+See [#6](https://github.com/boralyl/kodi-recently-added/issues/6) for more details and
+possible workarounds.
