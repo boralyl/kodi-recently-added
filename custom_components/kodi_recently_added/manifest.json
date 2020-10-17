@@ -1,6 +1,6 @@
 {
   "codeowners": ["@boralyl"],
-  "config_flow": false,
+  "config_flow": true,
   "dependencies": ["kodi"],
   "documentation": "https://github.com/boralyl/kodi-recently-added",
   "issue_tracker": "https://github.com/boralyl/kodi-recently-added/issues",

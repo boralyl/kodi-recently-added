@@ -1,4 +1,5 @@
 {
+  "config_flow": true,
   "documentation": "https://github.com/boralyl/kodi-recently-added",
   "domains": ["sensor"],
   "homeassistant": "0.115.0",

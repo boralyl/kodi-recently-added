@@ -1,0 +1,17 @@
+{
+  "config": {
+    "error": {
+      "kodi_not_configured": "You must fist add Kodi via the integrations page."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "kodi_entry_id": "Kodi integration"
+        },
+        "description": "Select which Kodi integration to use.",
+        "title": "Setup"
+      }
+    },
+    "title": "Kodi Recently Added Media"
+  }
+}

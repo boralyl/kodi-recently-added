@@ -112,6 +112,15 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
     result_key = "episodes"
 
     @property
+    def unique_id(self) -> str:
+        """The unique ID of the entity.
+
+        It's important to define this, otherwise the entities created will not show up
+        on the configured integration card as associated with the integration.
+        """
+        return self.name
+
+    @property
     def name(self) -> str:
         return "kodi_recently_added_tv"
 
@@ -183,6 +192,10 @@ class KodiRecentlyAddedMoviesEntity(KodiMediaEntity):
     ]
     update_method = "VideoLibrary.GetRecentlyAddedMovies"
     result_key = "movies"
+
+    @property
+    def unique_id(self) -> str:
+        return self.name
 
     @property
     def name(self) -> str:
