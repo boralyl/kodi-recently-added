@@ -1,12 +1,47 @@
-"""Tests for sensor.py."""
+"""Tests for utils.py."""
 from unittest.mock import Mock
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.kodi_recently_added.sensor import (
+from custom_components.kodi_recently_added.utils import (
     KODI_DOMAIN,
+    find_matching_config_entry,
     find_matching_config_entry_for_host,
 )
+
+
+def test_find_matching_config_entry():
+    """Test that we find a matching entry."""
+    config_entries = [
+        MockConfigEntry(entry_id="foo", domain=KODI_DOMAIN),
+        MockConfigEntry(entry_id="bar", domain=KODI_DOMAIN),
+    ]
+    mock_hass = Mock()
+    mock_hass.config_entries.async_entries.return_value = config_entries
+
+    assert config_entries[1] == find_matching_config_entry(mock_hass, "bar")
+
+
+def test_find_matching_config_entry_does_not_exist():
+    """Test that we do not find a matching entry."""
+    config_entries = [
+        MockConfigEntry(entry_id="foo", domain=KODI_DOMAIN),
+        MockConfigEntry(entry_id="bar", domain=KODI_DOMAIN),
+    ]
+    mock_hass = Mock()
+    mock_hass.config_entries.async_entries.return_value = config_entries
+
+    assert find_matching_config_entry(mock_hass, "foobar") is None
+
+
+def test_find_matching_config_entry_skip_source_ignore():
+    """Test we skip matches whose source is ignore."""
+    config_entries = [
+        MockConfigEntry(entry_id="foo", domain=KODI_DOMAIN, source="ignore"),
+        MockConfigEntry(entry_id="bar", domain=KODI_DOMAIN),
+    ]
+    mock_hass = Mock()
+    mock_hass.config_entries.async_entries.return_value = config_entries
 
 
 def test_find_matching_config_entry_for_host():

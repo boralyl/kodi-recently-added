@@ -5,7 +5,7 @@ import logging
 
 from homeassistant import config_entries, core
 
-from .const import DOMAIN
+from .const import CONF_HIDE_WATCHED, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
@@ -18,6 +18,7 @@ async def async_setup_entry(
     kodi_entry_id = entry.data["kodi_entry_id"]
     unsub_options_update_listener = entry.add_update_listener(options_update_listener)
     hass.data[DOMAIN][entry.entry_id] = {
+        "hide_watched": entry.options.get(CONF_HIDE_WATCHED, False),
         "kodi_config_entry_id": kodi_entry_id,
         "unsub_options_update_listener": unsub_options_update_listener,
     }
@@ -65,9 +66,6 @@ async def options_update_listener(
 
 
 async def async_setup(hass: core.HomeAssistant, config: dict) -> bool:
-    """Set up the Kodi Recently Added Media component.
-
-    This component can only be configured through the Integrations UI.
-    """
+    """Set up the Kodi Recently Added Media component from yaml configuration."""
     hass.data.setdefault(DOMAIN, {})
     return True

@@ -13,5 +13,16 @@
       }
     },
     "title": "Kodi Recently Added Media"
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kodi Recently Added Media Options",
+        "description": "Additional settings for the component.",
+        "data": {
+          "hide_watched": "Exclude media that is marked as watched."
+        }
+      }
+    }
   }
 }

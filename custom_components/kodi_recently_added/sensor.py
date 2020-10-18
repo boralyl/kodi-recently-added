@@ -1,16 +1,15 @@
 import logging
-from typing import Optional
 
 from homeassistant import config_entries, core
 from homeassistant.components.kodi.const import DATA_KODI, DOMAIN as KODI_DOMAIN
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 
 from .const import CONF_HIDE_WATCHED, DOMAIN
 from .entities import KodiRecentlyAddedMoviesEntity, KodiRecentlyAddedTVEntity
+from .utils import find_matching_config_entry, find_matching_config_entry_for_host
 
 PLATFORM_SCHEMA = vol.Any(
     PLATFORM_SCHEMA.extend(
@@ -23,36 +22,15 @@ PLATFORM_SCHEMA = vol.Any(
 _LOGGER = logging.getLogger(__name__)
 
 
-def find_matching_config_entry(
-    hass: core.HomeAssistant, entry_id: str
-) -> Optional[ConfigEntry]:
-    """Search existing config entries for one matching the entry_id."""
-    for entry in hass.config_entries.async_entries(KODI_DOMAIN):
-        # Skip any entry whose source is marked as ignored.
-        if entry.entry_id == entry_id and entry.source != "ignore":
-            return entry
-    return None
-
-
-def find_matching_config_entry_for_host(
-    hass: core.HomeAssistant, host: str
-) -> Optional[ConfigEntry]:
-    """Search existing config entries for one matching the host."""
-    for entry in hass.config_entries.async_entries(KODI_DOMAIN):
-        # Skip any entry whose source is marked as ignored.
-        if entry.data.get(CONF_HOST) == host and entry.source != "ignore":
-            return entry
-    return None
-
-
 async def async_setup_entry(
     hass: core.HomeAssistant,
     config_entry: config_entries.ConfigEntry,
     async_add_entities,
 ):
-    """Setup sensors from a config entry."""
+    """Setup sensors from a config entry created in the integrations UI."""
     conf = hass.data[DOMAIN][config_entry.entry_id]
-    config_entry = find_matching_config_entry(hass, conf["kodi_config_entry_id"])
+    kodi_config_entry = find_matching_config_entry(hass, conf["kodi_config_entry_id"])
+
     try:
         data = hass.data[KODI_DOMAIN][conf["kodi_config_entry_id"]]
     except KeyError:
@@ -64,11 +42,13 @@ async def async_setup_entry(
             config_entries,
         )
         return
-    kodi = data[DATA_KODI]
 
-    tv_entity = KodiRecentlyAddedTVEntity(kodi, config_entry.data, hide_watched=False)
+    kodi = data[DATA_KODI]
+    tv_entity = KodiRecentlyAddedTVEntity(
+        kodi, kodi_config_entry.data, hide_watched=conf.get(CONF_HIDE_WATCHED, False)
+    )
     movies_entity = KodiRecentlyAddedMoviesEntity(
-        kodi, config_entry.data, hide_watched=False
+        kodi, kodi_config_entry.data, hide_watched=conf.get(CONF_HIDE_WATCHED, False)
     )
     async_add_entities([tv_entity, movies_entity])
 
