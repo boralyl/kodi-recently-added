@@ -16,7 +16,11 @@ async def async_setup_entry(
 ) -> bool:
     """Set up platforms from a ConfigEntry."""
     kodi_entry_id = entry.data["kodi_entry_id"]
-    hass.data[DOMAIN][entry.entry_id] = {"kodi_config_entry_id": kodi_entry_id}
+    unsub_options_update_listener = entry.add_update_listener(options_update_listener)
+    hass.data[DOMAIN][entry.entry_id] = {
+        "kodi_config_entry_id": kodi_entry_id,
+        "unsub_options_update_listener": unsub_options_update_listener,
+    }
 
     if not entry.unique_id:
         hass.config_entries.async_update_entry(
@@ -43,10 +47,21 @@ async def async_unload_entry(
             ]
         )
     )
+    # Remove options_update_listener.
+    hass.data[DOMAIN][entry.entry_id]["unsub_options_update_listener"]()
+
+    # Remove config entry from domain.
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
+
+
+async def options_update_listener(
+    hass: core.HomeAssistant, config_entry: config_entries.ConfigEntry
+):
+    """Handle options update."""
+    await hass.config_entries.async_reload(config_entry.entry_id)
 
 
 async def async_setup(hass: core.HomeAssistant, config: dict) -> bool:
