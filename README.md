@@ -19,7 +19,7 @@ Kodi's recently added media.
 - [Configuration](#configuration)
   - [Configuring via YAML](#configuring-via-yaml)
   - [Configuring via Integrations](#configuring-via-integrations)
-- [Upgrading from configuration.yaml to UI integration]()
+- [Upgrading from configuration.yaml to UI integration](#upgrading-from-configurationyaml-to-ui-integration)
 - [Known Issues](#known-issues)
 
 ## Installation
@@ -88,6 +88,9 @@ TODO
 TODO
 
 ## Known Issues
+
+Below is a list of known issues that either can't be fixed by changes to the component
+itself due to external factors.
 
 ### Artwork does not load when using the upcoming-media-card
 
