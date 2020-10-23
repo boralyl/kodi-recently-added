@@ -10,19 +10,41 @@ Kodi's recently added media.
 
 ![Kodi Recently Added Media](https://raw.githubusercontent.com/boralyl/kodi-recently-added/master/assets/example.png)
 
-## Pre-Installation
+# Table of Contents
 
-**NOTE: This component only will work with Home Assistant version 0.115 and above. Additionally Kodi must be setup via the UI in the integrations section of the Home Assistant configuration.**
+- [Installation](#installation)
+  - [Pre-Installation](#pre-installation)
+  - [HACS Install](#hacs-install)
+  - [Manual Install](#manual-install)
+  - [Upgrading from configuration.yaml to UI integration]()
+- [Configuration](#configuration)
+  - [Configuring via YAML]()
+  - [Configuring via Integrations]()
+- [Known Issues](#known-issues)
 
-## HACS Installation
+## Installation
 
-1. Search for `Kodi Recently Added Component` in the HACS Store tab.
+### Pre-Installation
+
+**NOTE: This component only works with Home Assistant version 0.115 and above. Additionally Kodi must be setup via the UI in the integrations section of the Home Assistant configuration.**
+
+### HACS Install
+
+1. Search for `Kodi Recently Added Component` under `Integrations` in the HACS Store tab.
 2. Install the card: [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
-3. Add the code to your `configuration.yaml` using the config options below.
+3. ~~Add the code to your `configuration.yaml` using the config options below.~~ (This is deprecated and it's recommended to add the integration via the Home Assistant Integrations if you are using >= v2.0.0)
 4. Add the code for the card to your `ui-lovelace.yaml`, or via the lovelace dashboard.
 5. **You will need to restart after installation for the component to start working.**
 
-### Platform Configuration:
+### Manual Install
+
+1. In your `/config` directory, create a `custom_components` folder if one does not exist.
+2. Copy the [kodi_recently_added](https://github.com/boralyl/kodi-recently-added/tree/master/custom_components) folder and all of it's contents from to your `custom components` directory.
+3. Restart Home Assistant.
+
+## Configuration
+
+### Configuring via YAML
 
 | key          | required | default | description                                                                                                         |
 | ------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -31,7 +53,7 @@ Kodi's recently added media.
 
 The host is the same host you entered when configuring Kodi via the integrations page.
 
-### Sample configuration.yaml:
+#### Sample configuration.yaml:
 
 ```yaml
 sensor:
@@ -43,7 +65,7 @@ sensor:
     host: 10.1.1.3
 ```
 
-### Sample for ui-lovelace.yaml:
+#### Sample for ui-lovelace.yaml:
 
 ```yaml
 - type: custom:upcoming-media-card
@@ -57,7 +79,9 @@ sensor:
   image_style: fanart
 ```
 
-_NOTE: Currently genres, rating, and studio only work for Movies._
+### Configuring via Integrations
+
+TODO
 
 ## Known Issues
 
@@ -68,3 +92,8 @@ your Kodi instance does not use SSL. When the upcoming-media-card tries to load 
 artwork it will fail to do so since modern browsers do not allow loading insecure requests.
 See [#6](https://github.com/boralyl/kodi-recently-added/issues/6) for more details and
 possible workarounds.
+
+### Genres, ratings and studios don't show up for TV Shows
+
+Currently genres, rating, and studio are only populated for Movies. This is a limitation
+of the data Kodi stores for TV shows.
