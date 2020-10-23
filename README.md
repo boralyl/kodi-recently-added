@@ -16,10 +16,10 @@ Kodi's recently added media.
   - [Pre-Installation](#pre-installation)
   - [HACS Install](#hacs-install)
   - [Manual Install](#manual-install)
-  - [Upgrading from configuration.yaml to UI integration]()
 - [Configuration](#configuration)
-  - [Configuring via YAML]()
-  - [Configuring via Integrations]()
+  - [Configuring via YAML](#configuring-via-yaml)
+  - [Configuring via Integrations](#configuring-via-integrations)
+- [Upgrading from configuration.yaml to UI integration]()
 - [Known Issues](#known-issues)
 
 ## Installation
@@ -80,6 +80,10 @@ sensor:
 ```
 
 ### Configuring via Integrations
+
+TODO
+
+## Upgrading from configuration.yaml to UI Integration
 
 TODO
 
