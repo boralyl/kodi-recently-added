@@ -11,8 +11,7 @@
         "description": "Select which Kodi integration to use.",
         "title": "Setup"
       }
-    },
-    "title": "Kodi Recently Added Media"
+    }
   },
   "options": {
     "step": {
