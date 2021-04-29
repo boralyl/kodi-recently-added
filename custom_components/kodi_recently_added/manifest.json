@@ -4,8 +4,9 @@
   "dependencies": ["kodi"],
   "documentation": "https://github.com/boralyl/kodi-recently-added",
   "issue_tracker": "https://github.com/boralyl/kodi-recently-added/issues",
+  "iot_class": "local_poling",
   "domain": "kodi_recently_added",
   "name": "Kodi Recently Added Media",
   "requirements": ["typing-extensions==3.7.4.1"],
-  "version": "2.0.1"
+  "version": "2.0.2"
 }
