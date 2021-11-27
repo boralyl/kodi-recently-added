@@ -1,10 +1,4 @@
-from typing import Optional
-
-from typing_extensions import TypedDict
-
-
-class DeviceStateAttrs(TypedDict):
-    data: str
+from typing import Optional, TypedDict
 
 
 class KodiConfig(TypedDict):

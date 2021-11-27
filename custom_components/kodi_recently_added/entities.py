@@ -1,13 +1,14 @@
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 from urllib import parse
 
 from homeassistant.const import STATE_OFF, STATE_ON, STATE_PROBLEM, STATE_UNKNOWN
 from homeassistant.helpers.entity import Entity
+import jsonrpc_base
 from pykodi import Kodi
 
-from .types import DeviceStateAttrs, KodiConfig
+from .types import KodiConfig
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,6 +44,22 @@ class KodiMediaEntity(Entity):
         try:
             result = await self.kodi.call_method(
                 self.update_method, properties=self.properties
+            )
+        except jsonrpc_base.jsonrpc.ProtocolError as exc:
+            error = exc.args[2]["error"]
+            _LOGGER.error(
+                "Run API method %s.%s(%s) error: %s",
+                self.entity_id,
+                self.update_method,
+                self.properties,
+                error,
+            )
+        except jsonrpc_base.jsonrpc.TransportError:
+            _LOGGER.warning(
+                "TransportError trying to run API method %s.%s(%s)",
+                self.entity_id,
+                self.update_method,
+                self.properties,
             )
         except Exception:
             _LOGGER.exception("Error updating sensor, is kodi running?")
@@ -125,7 +142,7 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
         return "kodi_recently_added_tv"
 
     @property
-    def device_state_attributes(self) -> DeviceStateAttrs:
+    def extra_state_attributes(self) -> Mapping[str, Any]:
         attrs = {}
         card_json = [
             {
@@ -202,7 +219,7 @@ class KodiRecentlyAddedMoviesEntity(KodiMediaEntity):
         return "kodi_recently_added_movies"
 
     @property
-    def device_state_attributes(self) -> DeviceStateAttrs:
+    def extra_state_attributes(self) -> Mapping[str, Any]:
         attrs = {}
         card_json = [
             {
