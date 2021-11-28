@@ -22,6 +22,7 @@ async def test_flow_init_kodi_not_configured(hass):
         "errors": {"base": "kodi_not_configured"},
         "flow_id": mock.ANY,
         "handler": "kodi_recently_added",
+        "last_step": None,
         "step_id": "user",
         "type": "form",
     } == result
@@ -68,6 +69,7 @@ async def test_flow_init_kodi_is_configured(hass):
         "errors": {},
         "flow_id": mock.ANY,
         "handler": "kodi_recently_added",
+        "last_step": None,
         "step_id": "user",
         "type": "form",
     } == result
@@ -125,6 +127,7 @@ async def test_flow_user_setp_success(hass):
         "description": None,
         "description_placeholders": None,
         "result": mock.ANY,
+        "options": {},
     }
     assert expected == result
 
