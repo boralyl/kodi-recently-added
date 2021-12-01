@@ -55,7 +55,7 @@ class KodiMediaEntity(Entity):
                 error,
             )
         except jsonrpc_base.jsonrpc.TransportError:
-            _LOGGER.warning(
+            _LOGGER.debug(
                 "TransportError trying to run API method %s.%s(%s)",
                 self.entity_id,
                 self.update_method,
