@@ -1,6 +1,8 @@
 """Tests for entities.py."""
 from unittest import mock
 
+import pykodi
+
 from custom_components.kodi_recently_added.entities import KodiMediaEntity
 
 
@@ -74,3 +76,22 @@ def test_get_web_url_non_http():
     path = "nfs://127.0.0.2/volume1/image.png"
     expected = "http://username:password@127.0.0.1:8080/image/image%3A%2F%2Fnfs%253A%252F%252F127.0.0.2%252Fvolume1%252Fimage.png"
     assert expected == entity.get_web_url(path)
+
+
+@mock.patch("custom_components.kodi_recently_added.entities._LOGGER")
+async def test_async_update_skips_if_not_connected(logger):
+    """Test we skip the update if kodi is not connected."""
+    config = {
+        "host": "127.0.0.1",
+        "password": "password",
+        "port": 8080,
+        "ssl": False,
+        "username": "username",
+    }
+    kodi = mock.Mock(spec=pykodi.Kodi)
+    kodi._conn = mock.Mock(connected=False)
+    entity = KodiMediaEntity(kodi, config)
+    await entity.async_update()
+    assert kodi.call_method.called is False
+    expected_call = mock.call("Kodi is not connected, skipping update.")
+    assert expected_call == logger.debug.call_args
