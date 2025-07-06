@@ -1,11 +1,12 @@
 import logging
 
+import voluptuous as vol
+
 from homeassistant import config_entries, core
-from homeassistant.components.kodi.const import DATA_KODI, DOMAIN as KODI_DOMAIN
+from homeassistant.components.kodi.const import DOMAIN as KODI_DOMAIN
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import CONF_HOST
 import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
 
 from .const import CONF_HIDE_WATCHED, DOMAIN
 from .entities import KodiRecentlyAddedMoviesEntity, KodiRecentlyAddedTVEntity
@@ -31,19 +32,7 @@ async def async_setup_entry(
     conf = hass.data[DOMAIN][config_entry.entry_id]
     kodi_config_entry = find_matching_config_entry(hass, conf["kodi_config_entry_id"])
 
-    try:
-        data = hass.data[KODI_DOMAIN][conf["kodi_config_entry_id"]]
-    except KeyError:
-        config_entries = [
-            entry.as_dict() for entry in hass.config_entries.async_entries(KODI_DOMAIN)
-        ]
-        _LOGGER.error(
-            "Failed to setup sensor. Could not find kodi data from existing config entries: %s",
-            config_entries,
-        )
-        return
-
-    kodi = data[DATA_KODI]
+    kodi = kodi_config_entry.runtime_data.kodi
     tv_entity = KodiRecentlyAddedTVEntity(
         kodi, kodi_config_entry.data, hide_watched=conf.get(CONF_HIDE_WATCHED, False)
     )
