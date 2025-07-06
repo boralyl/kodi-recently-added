@@ -2,7 +2,7 @@
   "config_flow": true,
   "documentation": "https://github.com/boralyl/kodi-recently-added",
   "domains": ["sensor"],
-  "homeassistant": "0.115.0",
+  "homeassistant": "2025.6",
   "iot_class": "Local Polling",
   "name": "Kodi Recently Added Media",
   "render_readme": true
