@@ -1,4 +1,5 @@
 """Tests for entities.py."""
+
 from unittest import mock
 
 import pykodi
@@ -17,7 +18,7 @@ def test_kodi_media_entity_init_base_web_url_https():
     }
     entity = KodiMediaEntity(mock.Mock(), config)
     expected = "https://username:password@127.0.0.1:8080/image/image%3A%2F%2F"
-    assert expected == entity.base_web_url
+    assert expected == entity.base_web_image_url
 
 
 def test_kodi_media_entity_init_base_web_url_http():
@@ -31,7 +32,7 @@ def test_kodi_media_entity_init_base_web_url_http():
     }
     entity = KodiMediaEntity(mock.Mock(), config)
     expected = "http://username:password@127.0.0.1:8080/image/image%3A%2F%2F"
-    assert expected == entity.base_web_url
+    assert expected == entity.base_web_image_url
 
 
 def test_kodi_media_entity_init_base_web_url_no_auth():
@@ -45,7 +46,7 @@ def test_kodi_media_entity_init_base_web_url_no_auth():
     }
     entity = KodiMediaEntity(mock.Mock(), config)
     expected = "http://127.0.0.1:8080/image/image%3A%2F%2F"
-    assert expected == entity.base_web_url
+    assert expected == entity.base_web_image_url
 
 
 def test_get_web_url_http_already():

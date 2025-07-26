@@ -3,10 +3,11 @@ import logging
 from typing import Any, Dict, List, Mapping, Optional
 from urllib import parse
 
-from homeassistant.const import STATE_OFF, STATE_ON, STATE_PROBLEM, STATE_UNKNOWN
-from homeassistant.helpers.entity import Entity
 import jsonrpc_base
 from pykodi import Kodi
+
+from homeassistant.const import STATE_OFF, STATE_ON, STATE_PROBLEM, STATE_UNKNOWN
+from homeassistant.helpers.entity import Entity
 
 from .types import KodiConfig
 
@@ -31,9 +32,8 @@ class KodiMediaEntity(Entity):
         auth = ""
         if config["username"] is not None and config["password"] is not None:
             auth = f"{config['username']}:{config['password']}@"
-        self.base_web_url = (
-            f"{protocol}://{auth}{config['host']}:{config['port']}/image/image%3A%2F%2F"
-        )
+        self.base_web_url = f"{protocol}://{auth}{config['host']}:{config['port']}"
+        self.base_web_image_url = f"{self.base_web_url}/image/image%3A%2F%2F"
 
     @property
     def state(self) -> Optional[str]:
@@ -111,11 +111,10 @@ class KodiMediaEntity(Entity):
         # This looks strange, but the path needs to be quoted twice in order
         # to work.
         quoted_path = parse.quote(parse.quote(path, safe=""))
-        return self.base_web_url + quoted_path
+        return self.base_web_image_url + quoted_path
 
 
 class KodiRecentlyAddedTVEntity(KodiMediaEntity):
-
     properties = [
         "art",
         "dateadded",
@@ -123,11 +122,14 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
         "fanart",
         "firstaired",
         "playcount",
+        "plot",
         "rating",
         "runtime",
         "season",
+        "seasonid",
         "showtitle",
         "title",
+        "tvshowid",
     ]
     update_method = "VideoLibrary.GetRecentlyAddedEpisodes"
     result_key = "episodes"
@@ -165,6 +167,7 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
                 card = {
                     "airdate": show["dateadded"].replace(" ", "T") + "Z",
                     "episode": show["title"],
+                    "deep_link": f"{self.base_web_url}/#tvshow/{show['tvshowid']}/{show['seasonid']}/{show['episodeid']}",
                     "fanart": "",
                     "flag": show["playcount"] == 0,
                     "genres": "",
@@ -174,6 +177,7 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
                     "runtime": show["runtime"] // 60,
                     "title": show["showtitle"],
                     "studio": "",
+                    "summary": show["plot"],
                 }
                 rating = round(show["rating"], 1)
                 if rating:
@@ -199,12 +203,12 @@ class KodiRecentlyAddedTVEntity(KodiMediaEntity):
 
 
 class KodiRecentlyAddedMoviesEntity(KodiMediaEntity):
-
     properties = [
         "art",
         "dateadded",
         "genre",
         "playcount",
+        "plot",
         "premiered",
         "rating",
         "runtime",
@@ -242,6 +246,7 @@ class KodiRecentlyAddedMoviesEntity(KodiMediaEntity):
                 card = {
                     "aired": movie["premiered"],
                     "airdate": movie["dateadded"].replace(" ", "T") + "Z",
+                    "deep_link": f"{self.base_web_url}/#movie/{movie['movieid']}",
                     "flag": movie["playcount"] == 0,
                     "genres": ",".join(movie["genre"]),
                     "rating": round(movie["rating"], 1),
@@ -249,6 +254,7 @@ class KodiRecentlyAddedMoviesEntity(KodiMediaEntity):
                     "runtime": movie["runtime"] // 60,
                     "title": movie["title"],
                     "studio": ",".join(movie["studio"]),
+                    "summary": movie["plot"],
                 }
                 rating = round(movie["rating"], 1)
                 if rating:
