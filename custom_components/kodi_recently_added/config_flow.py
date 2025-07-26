@@ -1,10 +1,10 @@
 import logging
 from typing import Any, Dict, Optional
 
-import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.components.kodi.const import DOMAIN as KODI_DOMAIN
 from homeassistant.core import callback
+import voluptuous as vol
 
 from .const import CONF_HIDE_WATCHED, CONF_KODI_INSTANCE, DOMAIN
 
@@ -12,7 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 OPTIONS_SCHEMA = vol.Schema({vol.Optional(CONF_HIDE_WATCHED, default=False): bool})
 
 
-class KodiRecentlyAddedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class KodiRecentlyAddedConfifFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Kodi Recently Added config flow."""
 
     async def async_step_user(self, user_input: Optional[Dict[str, Any]]):
